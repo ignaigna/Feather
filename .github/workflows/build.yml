@@ -50,7 +50,7 @@ jobs:
               {
                 "title":"${{ github.repository }} [Build ${{ github.run_number }}]",
                 "description":"[`'"$COMMIT_HASH"'`](https://github.com/${{ github.repository }}/commit/'"$COMMIT_HASH"') '"$COMMIT_MESSAGE"'",
-                "url":"https://github.com/${{ github.repository }}/actions/runs/${GITHUB_RUN_ID}",
+                "url":"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }",
                 "color":6648790,
                 "author":{
                   "name":"${{ github.actor }}",
