@@ -1,12 +1,11 @@
 name: Update repo
 
 on:
-
   workflow_dispatch:
 
 jobs:
   update_repo:
-    runs-on: macos-13
+    runs-on: macos-15
 
     steps:
       - name: Checkout code

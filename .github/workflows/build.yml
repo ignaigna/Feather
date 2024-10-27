@@ -8,47 +8,35 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14
-    steps:
+     runs-on: macos-15
+     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies (packages)
         run: |
           curl -LO https://github.com/ProcursusTeam/ldid/releases/download/v2.1.5-procursus7/ldid_macosx_x86_64
           sudo install -m755 ldid_macosx_x86_64 /usr/local/bin/ldid
-          brew install 7zip gnu-sed
+          brew install 7zip
 
       - name: Select Xcode 16
         run: | 
           sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
           mkdir upload
+          sed -i '' 's/MARKETING_VERSION = \(.*\);/MARKETING_VERSION = \1-'$(git rev-parse --short HEAD)'/g' /workspaces/Feather/feather.xcodeproj/project.pbxproj
           sed -i '' '/func application(/a\
           Preferences.beta = true
           ' iOS/Delegates/AppDelegate.swift
 
-      - name: Compile f
+      - name: Compile Feather
         run: | 
-          make package SCHEME="'feather (Release)'"
+          make package
           mv packages/* upload/
 
-
-
-
-
-      - name: Install pyupload
-        run: |
-          pip install pyupload
-
-      - name: Upload file to Catbox
+      - name: Upload file to Litterbox (Catbox)
         id: upload_catbox
         run: |
-          UPLOAD_OUTPUT=$(pyupload upload/feather.ipa --host=catbox)
-          echo "Upload Output: $UPLOAD_OUTPUT"
-          
-          LINK=$(echo "$UPLOAD_OUTPUT" | sed -n 's/.*Your link : //p')
-          echo "Uploaded file link: $LINK"
-          
+          LINK=$(curl -F "reqtype=fileupload" -F "time=12h" -F "fileToUpload=@upload/Feather.ipa" https://litterbox.catbox.moe/resources/internals/api.php)
           echo "catbox_link=$LINK" >> $GITHUB_ENV
 
       - name: Send Discord build message
@@ -57,7 +45,7 @@ jobs:
           COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s') &&
           (
           curl "${{ secrets.B_WEBHOOK }}" -sS -H "Content-Type:application/json" -X POST -d '{
-            "content":null,
+            "content": "@everyone New build available!",
             "embeds":[
               {
                 "title":"${{ github.repository }} [Build ${{ github.run_number }}]",
