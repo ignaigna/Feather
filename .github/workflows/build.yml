@@ -30,7 +30,7 @@ jobs:
 
       - name: Compile Feather
         run: | 
-          make package
+          make package SCHEME="'feather (Release)'"
           mv packages/* upload/
 
       - name: Upload file to Litterbox (Catbox)

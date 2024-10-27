@@ -1,17 +1,17 @@
 TARGET_CODESIGN = $(shell which ldid)
 
-PLATFORM = iphoneos
-NAME = feather
-SCHEME ?= 'feather (Debug)'
-RELEASE = Release-iphoneos
+PLATFORM      = iphoneos
+NAME          = feather
+SCHEME       ?= 'feather (Debug)'
+RELEASE       = Release-iphoneos
 CONFIGURATION = Release
 
 MACOSX_SYSROOT = $(shell xcrun -sdk macosx --show-sdk-path)
 TARGET_SYSROOT = $(shell xcrun -sdk $(PLATFORM) --show-sdk-path)
 
 APP_TMP         = $(TMPDIR)/$(NAME)
-STAGE_DIR   = $(APP_TMP)/stage
-APP_DIR 	   = $(APP_TMP)/Build/Products/$(RELEASE)/$(NAME).app
+STAGE_DIR       = $(APP_TMP)/stage
+APP_DIR 	    = $(APP_TMP)/Build/Products/$(RELEASE)/$(NAME).app
 
 all: package
 
