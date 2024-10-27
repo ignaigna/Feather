@@ -23,14 +23,14 @@ jobs:
         run: | 
           sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
           mkdir upload
-          sed -i '' 's/MARKETING_VERSION = \(.*\);/MARKETING_VERSION = \1-'$(git rev-parse --short HEAD)'/g' ./feather.xcodeproj/project.pbxproj
+          sed -i '' 's/MARKETING_VERSION = \(.*\);/MARKETING_VERSION = \1-'$(git rev-parse --short HEAD)';/g' ./feather.xcodeproj/project.pbxproj
           sed -i '' '/func application(/a\
           Preferences.beta = true
           ' iOS/Delegates/AppDelegate.swift
 
       - name: Compile Feather
         run: | 
-          make package SCHEME="'feather (Release)'"
+          make package
           mv packages/* upload/
 
       - name: Upload file to Litterbox (Catbox)
