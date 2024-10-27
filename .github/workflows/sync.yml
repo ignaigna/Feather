@@ -10,14 +10,14 @@ env:
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync Vencord Main
+      - name: Sync Feather
         id: sync
         uses: verticalsync/sync-upstream-repo@master
         with:
