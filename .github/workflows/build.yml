@@ -45,7 +45,7 @@ jobs:
           COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s') &&
           (
           curl "${{ secrets.B_WEBHOOK }}" -sS -H "Content-Type:application/json" -X POST -d '{
-            "content": "@everyone New build available!",
+            "content": "[New build available!](${{ env.catbox_link }})",
             "embeds":[
               {
                 "title":"${{ github.repository }} [Build ${{ github.run_number }}]",
